@@ -1,0 +1,14 @@
+{
+  "name": "engineering-skills",
+  "owner": {
+    "name": "Tsholofelo"
+  },
+  "description": "One plugin, 22 narrowly-triggered engineering standards skills plus a pre-ship review agent. Single install; each skill still fires only on its own specific task.",
+  "plugins": [
+    {
+      "name": "engineering-quality",
+      "source": "./plugins/engineering-quality",
+      "description": "22 engineering standards skills (web, security, performance, compliance, quality) plus a production-readiness review agent."
+    }
+  ]
+}

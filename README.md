@@ -1,0 +1,94 @@
+# engineering-skills
+
+A Claude Code plugin marketplace with a single plugin — `engineering-quality`
+— containing 22 narrowly-triggered skills plus a pre-ship review agent. One
+install gets everyone everything; each skill still fires independently based
+on its own description.
+
+## Install
+
+```
+/plugin marketplace add <your-github-username>/engineering-skills
+/plugin install engineering-quality@engineering-skills
+```
+
+If the install summary says `Run /reload-plugins to activate.`, run that.
+
+## What's in it
+
+**Web (8):** custom-404, seo-metadata, open-graph, responsive-design,
+loading-states, form-validation, error-states, image-optimization
+
+**Security (8):** authentication, authorization, token-security,
+rate-limiting, csrf, cors, security-headers, secrets-management
+
+**Performance (1):** caching
+
+**Compliance (3):** privacy-policy, terms, cookie-consent
+
+**Quality (2):** accessibility, testing
+
+**Agent (1):** production-readiness-reviewer — invoke this deliberately
+before shipping. It's not a skill: it doesn't auto-trigger while you work,
+it only reviews (Read/Grep/Glob/Bash, no Write), and it reports gaps rather
+than fixing them.
+
+## Consequences of "one plugin, 22 skills" worth knowing
+
+- **`compliance/*` is no longer install-gated.** In an earlier version of
+  this repo, legal/cookie content lived in its own plugin so it wouldn't be
+  present unless someone chose to install it. Now that everything ships in
+  one plugin, that gate doesn't exist — the only thing keeping
+  `privacy-policy`, `terms`, and `cookie-consent` from firing on unrelated
+  work is their own description, which is written to require an explicit
+  ask or a confirmed "this is shipping to real users." That's a weaker
+  guarantee than an install-time boundary. If that turns out to misfire in
+  practice, the fix is pulling `compliance/` back into its own plugin, not
+  rewriting the descriptions further.
+- **The `security/*` skills cross-reference each other in their bodies**
+  (e.g. `authentication` points to `token-security`, `authorization`,
+  `rate-limiting`) as a partial mitigation for the risk flagged earlier:
+  splitting one workflow (build a login flow) across 8 independently-
+  triggered skills means a request that doesn't literally mention "CSRF"
+  or "rate limiting" might only pull in `authentication` and miss the
+  rest. The cross-references help if Claude reads into a skill's body, but
+  they don't fix triggering itself — worth watching whether these actually
+  all fire together in practice, not just assuming the pointers solve it.
+- **`bundles/` from the original tree is gone.** With one plugin as the
+  only install unit, there's nothing left for a "bundle" to select between
+  — installing the plugin already gets you everything. If you want curated
+  presets back, that's a documentation concern (e.g. "for a typical web
+  app you mainly need X, Y, Z") rather than an installable unit.
+
+## core-invariants.md
+
+Not a plugin — a plugin can't rewrite your CLAUDE.md for you. Copy this
+file's content into your project's CLAUDE.md by hand. It's the handful of
+rules (no client secrets, backend always re-validates, server-side
+authorization, safe error responses, HTTPS in prod) that should be active
+every turn rather than waiting for a skill to trigger.
+
+## Before you publish this
+
+- Update the `owner` block in `.claude-plugin/marketplace.json` with your
+  real GitHub handle/email if you want them public.
+- **The CI workflow's `claude plugin validate` step is unverified.** The
+  JSON-well-formed check will work as written. The `claude plugin validate`
+  step is built from the documented CLI command plus the standard
+  `npm install -g @anthropic-ai/claude-code` install pattern used for
+  Claude Code in CI elsewhere — but I haven't run it end-to-end, and I
+  don't know for certain whether `plugin validate` needs `ANTHROPIC_API_KEY`
+  set even for a pure structural check. Run the workflow once and add the
+  secret if it turns out to be required.
+- Check `quality/accessibility` and `quality/testing` against whatever's
+  already in your other Claude Code catalog (`design:accessibility-review`,
+  `engineering:testing-strategy`) before running both — same overlap flagged
+  earlier, still true here.
+- MIT license included as a default so "anyone can install" holds up
+  legally; swap it if you want different terms.
+
+## Updating
+
+```
+/plugin marketplace update engineering-skills
+```
