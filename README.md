@@ -47,7 +47,11 @@ before shipping. It's not a skill: it doesn't auto-trigger while you work,
 it only reviews (Read/Grep/Glob/Bash, no Write), and it reports gaps rather
 than fixing them.
 
-## Consequences of "one plugin, 22 skills" worth knowing
+## Consequences of "one plugin, 22 skills" worth knowing (plugin distribution)
+
+The repo as a whole ships two ways from one canonical `skills/` source (see
+above) — the points below are specifically about the Claude Code plugin
+distribution (`plugins/engineering-quality`), not the portable install.
 
 - **`compliance/*` is no longer install-gated.** In an earlier version of
   this repo, legal/cookie content lived in its own plugin so it wouldn't be
@@ -94,6 +98,19 @@ every turn rather than waiting for a skill to trigger.
   don't know for certain whether `plugin validate` needs `ANTHROPIC_API_KEY`
   set even for a pure structural check. Run the workflow once and add the
   secret if it turns out to be required.
+- **The CI workflow's sync-drift-check step is also unverified in actual
+  GitHub Actions.** It runs `scripts/sync-plugin-skills.mjs` then
+  `git diff --exit-code -- plugins/engineering-quality/skills` to catch
+  `skills/` and its plugin mirror going out of sync — confirmed working
+  locally (idempotent, no diff), but not yet inside a real workflow run.
+- **Once this is pushed to GitHub, run `npx skills add
+  <your-github-username>/engineering-skills --list`** and confirm each of
+  the 22 skills appears exactly once. The `npx skills` CLI discovers skills
+  from the top-level `skills/` folder *and* separately reads
+  `plugin.json`'s plugin-manifest declarations, and its docs don't specify
+  what happens if the same skill `name` surfaces from both — dropping the
+  explicit `skills` array from `plugin.json` lowers the odds of a collision
+  but doesn't rule one out.
 - Check `quality/accessibility` and `quality/testing` against whatever's
   already in your other Claude Code catalog (`design:accessibility-review`,
   `engineering:testing-strategy`) before running both — same overlap flagged
@@ -103,6 +120,14 @@ every turn rather than waiting for a skill to trigger.
 
 ## Updating
 
+Plugin install:
+
 ```
 /plugin marketplace update engineering-skills
+```
+
+Portable install: re-run the install command.
+
+```
+npx skills add <your-github-username>/engineering-skills
 ```
