@@ -1,11 +1,25 @@
 # engineering-skills
 
-A Claude Code plugin marketplace with a single plugin — `engineering-quality`
-— containing 22 narrowly-triggered skills plus a pre-ship review agent. One
-install gets everyone everything; each skill still fires independently based
-on its own description.
+22 narrowly-triggered engineering standards skills (web, security,
+performance, compliance, quality) plus a pre-ship production-readiness
+review agent. Each skill fires independently based on its own description.
+
+The repo ships two ways from one canonical source: as portable Agent Skills
+(`skills/`, installable in any compatible agent) and as a Claude Code plugin
+marketplace (`plugins/engineering-quality`). `skills/` is what gets edited;
+`plugins/engineering-quality/skills/` is a generated mirror kept in sync by
+`scripts/sync-plugin-skills.mjs` and checked in CI — see CONTRIBUTING.md.
 
 ## Install
+
+**Portable Agent Skills** (Claude Code, Cursor, Codex, OpenCode, and other
+`npx skills`-compatible agents):
+
+```
+npx skills add <your-github-username>/engineering-skills
+```
+
+**Claude Code plugin marketplace** (adds the pre-ship review agent too):
 
 ```
 /plugin marketplace add <your-github-username>/engineering-skills

@@ -2,8 +2,12 @@
 
 ## Adding a new skill
 
-1. Pick (or create) a category under
-   `plugins/engineering-quality/skills/<category>/`.
+`skills/` at the repo root is the canonical source — always edit there.
+`plugins/engineering-quality/skills/` is a generated mirror (see below);
+never hand-edit it, your changes will be overwritten and CI will flag the
+drift.
+
+1. Pick (or create) a category under `skills/<category>/`.
 2. Create `<category>/<skill-name>/SKILL.md` with frontmatter:
    ```yaml
    ---
@@ -11,18 +15,25 @@
    description: When to trigger this — be specific about the task context, not just the topic.
    ---
    ```
-3. If you added a new top-level category folder (not just a new skill
-   inside an existing one), add its path to the `skills` array in
-   `plugins/engineering-quality/.claude-plugin/plugin.json` — skills only
-   load from paths listed there.
-4. Keep the body short and actionable. If a skill needs more than
+3. Keep the body short and actionable. If a skill needs more than
    ~150 lines, split detail into a `references/` subfolder and point to
    it from the body instead of inlining everything.
-5. Before opening a PR, run:
+4. Regenerate the plugin mirror and validate before opening a PR:
    ```
+   node scripts/sync-plugin-skills.mjs
    claude plugin validate .
    claude plugin validate ./plugins/engineering-quality
    ```
+
+## Two distributions, one source
+
+This repo ships two ways: as portable Agent Skills (`skills/`, installable
+with `npx skills add`) and as a Claude Code plugin
+(`plugins/engineering-quality`, installable via `/plugin marketplace add`).
+`skills/` is what you edit; `scripts/sync-plugin-skills.mjs` regenerates
+`plugins/engineering-quality/skills/` from it, and CI
+(`.github/workflows/validate-plugin.yml`) fails the build if the two are
+out of sync.
 
 ## Adding the production-readiness agent's checks
 

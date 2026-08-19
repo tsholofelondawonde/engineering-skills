@@ -10,14 +10,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Verify plugins/engineering-quality/skills mirrors skills/
+        run: |
+          node scripts/sync-plugin-skills.mjs
+          git diff --exit-code -- plugins/engineering-quality/skills
+
       - name: Validate marketplace.json and plugin.json are well-formed
         run: |
           python3 -c "import json; json.load(open('.claude-plugin/marketplace.json'))"
           python3 -c "import json; json.load(open('plugins/engineering-quality/.claude-plugin/plugin.json'))"
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
 
       - name: Install Claude Code CLI
         run: npm install -g @anthropic-ai/claude-code
