@@ -1,9 +1,22 @@
 # engineering-skills
 
-23 narrowly-triggered skills — 22 engineering standards skills (web,
-security, performance, compliance, quality) plus a documentation
-generation workflow — plus a pre-ship production-readiness review agent.
-Each skill fires independently based on its own description.
+*23 narrowly-triggered engineering standards skills, plus a pre-ship review agent.*
+
+One plugin's worth of Agent Skills that enforce web, security, performance,
+compliance, and quality standards while you build — plus a documentation
+skill and a deliberately-invoked production-readiness review agent. Each
+skill fires independently based on its own description; nothing turns on
+until the task actually calls for it.
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License" /></a>
+  &nbsp;
+  <a href="https://github.com/vercel-labs/agent-skills"><img src="https://img.shields.io/badge/Agent%20Skills-compatible-brightgreen" alt="Agent Skills compatible" /></a>
+  &nbsp;
+  <a href="#installing"><img src="https://img.shields.io/badge/Codex%20%C2%B7%20Cursor%20%C2%B7%20Claude-installable-blueviolet" alt="Codex, Cursor, Claude" /></a>
+</p>
+
+<p align="center"><sub><a href="#installing">Installing</a> · <a href="#skills">Skills</a> · <a href="#core-invariantsmd">core-invariants.md</a> · <a href="#common-questions">FAQ</a> · <a href="#before-you-publish-this">Before you publish this</a> · <a href="#updating">Updating</a></sub></p>
 
 The repo ships two ways from one canonical source: as portable Agent Skills
 (`skills/`, installable in any compatible agent) and as a Claude Code plugin
@@ -11,16 +24,19 @@ marketplace (`plugins/engineering-quality`). `skills/` is what gets edited;
 `plugins/engineering-quality/skills/` is a generated mirror kept in sync by
 `scripts/sync-plugin-skills.mjs` and checked in CI — see CONTRIBUTING.md.
 
-## Install
+## Installing
 
-**Portable Agent Skills** (Claude Code, Cursor, Codex, OpenCode, and other
-`npx skills`-compatible agents):
+The [`npx skills add`](https://github.com/vercel-labs/agent-skills) CLI
+scans the `skills/` folder in this repo, so it works the same way for
+Claude Code, Cursor, Codex, OpenCode, and any other `npx
+skills`-compatible agent:
 
 ```
 npx skills add tsholofelondawonde/engineering-skills
 ```
 
-**Claude Code plugin marketplace** (adds the pre-ship review agent too):
+Prefer the Claude Code plugin marketplace instead? It wraps the same
+`skills/` source and additionally installs the pre-ship review agent:
 
 ```
 /plugin marketplace add tsholofelondawonde/engineering-skills
@@ -29,28 +45,44 @@ npx skills add tsholofelondawonde/engineering-skills
 
 If the install summary says `Run /reload-plugins to activate.`, run that.
 
-## What's in it
+## Skills
 
-**Web (8):** custom-404, seo-metadata, open-graph, responsive-design,
-loading-states, form-validation, error-states, image-optimization
+| Skill | Category | Description |
+| --- | --- | --- |
+| `custom-404` | web | Use when creating or reviewing 404/not-found handling for a route or application. |
+| `seo-metadata` | web | Use when creating a new public page/route, or when the request concerns meta titles, meta descriptions, or basic SEO. |
+| `open-graph` | web | Use when setting up social sharing previews, or adding/reviewing `og:` tags and share images. |
+| `responsive-design` | web | Use when building or reviewing layout/UI that needs to work across mobile, tablet, and desktop. |
+| `loading-states` | web | Use whenever wiring up an async action the user waits on — submit, upload, search, filtering, an AI call, or page-level data fetching. |
+| `form-validation` | web | Use when building or modifying a form and its validation logic. |
+| `error-states` | web | Use when handling API/network error responses in the UI, or confirming a successful user action (success/thank-you state). |
+| `image-optimization` | web | Use when adding images or media to a page. |
+| `authentication` | security | Use when creating or modifying login, signup, sessions, or authentication error handling. |
+| `authorization` | security | Use when adding permission checks, or protecting a resource or endpoint so only the right users can access it. |
+| `token-security` | security | Use when implementing or reviewing how access/refresh tokens are issued, stored, or rotated. |
+| `rate-limiting` | security | Use when exposing a public endpoint — especially login, registration, password reset, token refresh, public forms, search, or any expensive/AI-backed operation. |
+| `csrf` | security | Use when authentication relies on cookies, or when reviewing form/session security against cross-site request forgery. |
+| `cors` | security | Use when configuring cross-origin access for an API. |
+| `security-headers` | security | Use when configuring transport/security headers, or preparing an application for production. |
+| `secrets-management` | security | Use when handling API keys, credentials, or environment configuration. |
+| `caching` | performance | Use when adding caching for an API response, database query, or computed result. |
+| `privacy-policy` | compliance | Opt-in only — use when explicitly asked to draft a Privacy Policy, or when the project is explicitly confirmed to be shipping to real users and needs one. Do not use for prototypes, internal tools, or MVPs by default. |
+| `terms` | compliance | Opt-in only — use when explicitly asked to draft Terms of Service/Use, or when the project is explicitly confirmed to be shipping to real users and needs them. Do not use for prototypes, internal tools, or MVPs by default. |
+| `cookie-consent` | compliance | Opt-in only — use when the app actually uses non-essential cookies/tracking and a consent mechanism is explicitly requested. Do not use by default. |
+| `accessibility` | quality | Use when building or reviewing UI for accessibility. |
+| `testing` | quality | Use when adding tests for authentication, validation, or rate-limited/routed behavior, or when asked what to test for a feature. |
+| `readme-generator` | documentation | Use when asked to generate or refresh a project's README.md — gathers context from whatever manifests, docs, and AI-agent instruction files (CLAUDE.md, AGENTS.md, .cursorrules, copilot-instructions.md, etc.) actually exist in the repo. |
+| `production-readiness-reviewer` | agent | Invoke deliberately before shipping. Reviews (Read/Grep/Glob/Bash, no Write) and reports gaps rather than fixing them. |
 
-**Security (8):** authentication, authorization, token-security,
-rate-limiting, csrf, cors, security-headers, secrets-management
+### Which one fires when?
 
-**Performance (1):** caching
+The 23 skills above auto-trigger from their own `description` — you don't
+select them, you just work, and whichever skill matches the task loads
+itself. `production-readiness-reviewer` is the one exception: it's an
+agent, not a skill, so it never auto-triggers — invoke it explicitly
+before shipping.
 
-**Compliance (3):** privacy-policy, terms, cookie-consent
-
-**Quality (2):** accessibility, testing
-
-**Documentation (1):** readme-generator
-
-**Agent (1):** production-readiness-reviewer — invoke this deliberately
-before shipping. It's not a skill: it doesn't auto-trigger while you work,
-it only reviews (Read/Grep/Glob/Bash, no Write), and it reports gaps rather
-than fixing them.
-
-## Consequences of "one plugin, 22 skills" worth knowing (plugin distribution)
+## Consequences of "one plugin, 23 skills" worth knowing (plugin distribution)
 
 The repo as a whole ships two ways from one canonical `skills/` source (see
 above) — the points below are specifically about the Claude Code plugin
@@ -89,6 +121,34 @@ rules (no client secrets, backend always re-validates, server-side
 authorization, safe error responses, HTTPS in prod) that should be active
 every turn rather than waiting for a skill to trigger.
 
+## Common Questions
+
+**Does this work with Cursor and Codex, or only Claude Code?**
+Yes — the portable install (`npx skills add`) is agent-agnostic. This was
+verified for real against the published repo: `npx skills add
+tsholofelondawonde/engineering-skills --list` reports "Found 23 skills"
+and lists each one exactly once (details under "Before you publish this").
+The Claude Code plugin marketplace is a separate, additional distribution
+channel, not a requirement.
+
+**What is SKILL.md?**
+A portable instruction file — YAML frontmatter (`name`, `description`)
+plus a Markdown body — that any compatible agent can discover and load
+automatically when the `description` matches the task at hand. It's the
+open format behind the "Agent Skills compatible" badge above.
+
+**How is this different from writing rules directly in my CLAUDE.md?**
+CLAUDE.md-style instructions are always in context, every turn. Skills are
+the opposite: near-zero cost until triggered, then loaded in full. Use
+`core-invariants.md` (above) for the handful of rules that should always
+be active, and skills for everything that only matters for a specific kind
+of task.
+
+**Can I install just one skill instead of all 23?**
+Yes — `npx skills add tsholofelondawonde/engineering-skills --skill
+<name>` installs a single skill by its folder/`name` value from the table
+above.
+
 ## Before you publish this
 
 - `owner`/`author` in `.claude-plugin/marketplace.json` and
@@ -112,8 +172,6 @@ every turn rather than waiting for a skill to trigger.
   already in your other Claude Code catalog (`design:accessibility-review`,
   `engineering:testing-strategy`) before running both — same overlap flagged
   earlier, still true here.
-- MIT license included as a default so "anyone can install" holds up
-  legally; swap it if you want different terms.
 
 ## Updating
 
@@ -128,3 +186,8 @@ Portable install: re-run the install command.
 ```
 npx skills add tsholofelondawonde/engineering-skills
 ```
+
+## License
+
+[MIT License](LICENSE) · Copyright (c) 2026 Tsholofelo — a default so
+"anyone can install" holds up legally; swap it if you want different terms.
