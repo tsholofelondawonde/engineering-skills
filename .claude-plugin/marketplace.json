@@ -1,7 +1,8 @@
 {
   "name": "engineering-skills",
   "owner": {
-    "name": "Tsholofelo"
+    "name": "Tsholofelo",
+    "url": "https://github.com/tsholofelondawonde"
   },
   "description": "One plugin, 22 narrowly-triggered engineering standards skills plus a pre-ship review agent. Single install; each skill still fires only on its own specific task.",
   "plugins": [

@@ -16,13 +16,13 @@ marketplace (`plugins/engineering-quality`). `skills/` is what gets edited;
 `npx skills`-compatible agents):
 
 ```
-npx skills add <your-github-username>/engineering-skills
+npx skills add tsholofelondawonde/engineering-skills
 ```
 
 **Claude Code plugin marketplace** (adds the pre-ship review agent too):
 
 ```
-/plugin marketplace add <your-github-username>/engineering-skills
+/plugin marketplace add tsholofelondawonde/engineering-skills
 /plugin install engineering-quality@engineering-skills
 ```
 
@@ -88,23 +88,16 @@ every turn rather than waiting for a skill to trigger.
 
 ## Before you publish this
 
-- Update the `owner` block in `.claude-plugin/marketplace.json` with your
-  real GitHub handle/email if you want them public.
-- **The CI workflow's `claude plugin validate` step is unverified.** The
-  JSON-well-formed check will work as written. The `claude plugin validate`
-  step is built from the documented CLI command plus the standard
-  `npm install -g @anthropic-ai/claude-code` install pattern used for
-  Claude Code in CI elsewhere — but I haven't run it end-to-end, and I
-  don't know for certain whether `plugin validate` needs `ANTHROPIC_API_KEY`
-  set even for a pure structural check. Run the workflow once and add the
-  secret if it turns out to be required.
-- **The CI workflow's sync-drift-check step is also unverified in actual
-  GitHub Actions.** It runs `scripts/sync-plugin-skills.mjs` then
-  `git diff --exit-code -- plugins/engineering-quality/skills` to catch
-  `skills/` and its plugin mirror going out of sync — confirmed working
-  locally (idempotent, no diff), but not yet inside a real workflow run.
-- **Once this is pushed to GitHub, run `npx skills add
-  <your-github-username>/engineering-skills --list`** and confirm each of
+- `owner`/`author` in `.claude-plugin/marketplace.json` and
+  `plugins/engineering-quality/.claude-plugin/plugin.json` point at
+  `https://github.com/tsholofelondawonde`.
+- **CI is verified.** Both the `claude plugin validate` step and the
+  sync-drift-check step (`scripts/sync-plugin-skills.mjs` +
+  `git diff --exit-code -- plugins/engineering-quality/skills`) have run
+  and passed on real GitHub Actions pushes to `main` — no
+  `ANTHROPIC_API_KEY` was needed for the structural validate step.
+- **Run `npx skills add
+  tsholofelondawonde/engineering-skills --list`** and confirm each of
   the 22 skills appears exactly once. The `npx skills` CLI discovers skills
   from the top-level `skills/` folder *and* separately reads
   `plugin.json`'s plugin-manifest declarations, and its docs don't specify
@@ -129,5 +122,5 @@ Plugin install:
 Portable install: re-run the install command.
 
 ```
-npx skills add <your-github-username>/engineering-skills
+npx skills add tsholofelondawonde/engineering-skills
 ```
