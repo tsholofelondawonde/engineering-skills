@@ -99,14 +99,15 @@ every turn rather than waiting for a skill to trigger.
   `git diff --exit-code -- plugins/engineering-quality/skills`) have run
   and passed on real GitHub Actions pushes to `main` — no
   `ANTHROPIC_API_KEY` was needed for the structural validate step.
-- **Run `npx skills add
-  tsholofelondawonde/engineering-skills --list`** and confirm each of
-  the 22 skills appears exactly once. The `npx skills` CLI discovers skills
-  from the top-level `skills/` folder *and* separately reads
-  `plugin.json`'s plugin-manifest declarations, and its docs don't specify
-  what happens if the same skill `name` surfaces from both — dropping the
-  explicit `skills` array from `plugin.json` lowers the odds of a collision
-  but doesn't rule one out.
+- **`npx skills add tsholofelondawonde/engineering-skills --list` is
+  verified.** Run against the real published repo, it reports "Found 23
+  skills" and lists each of them — including `readme-generator` — exactly
+  once, confirming the portable install path works for any `npx
+  skills`-compatible agent (Codex, Cursor, OpenCode, etc.), not just Claude
+  Code. The `npx skills` CLI discovers skills from the top-level `skills/`
+  folder *and* separately reads `plugin.json`'s plugin-manifest
+  declarations; dropping the explicit `skills` array from `plugin.json`
+  avoids a collision between the two in practice, which this run confirms.
 - Check `quality/accessibility` and `quality/testing` against whatever's
   already in your other Claude Code catalog (`design:accessibility-review`,
   `engineering:testing-strategy`) before running both — same overlap flagged
