@@ -1,6 +1,6 @@
 ---
 name: open-graph
-description: Use when setting up social sharing previews, or adding/reviewing og: tags and share images.
+description: "Use when setting up social sharing previews, or adding/reviewing og: tags and share images."
 ---
 
 # Open Graph
