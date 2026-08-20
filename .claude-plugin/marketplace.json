@@ -4,12 +4,12 @@
     "name": "Tsholofelo",
     "url": "https://github.com/tsholofelondawonde"
   },
-  "description": "One plugin, 22 narrowly-triggered engineering standards skills plus a pre-ship review agent. Single install; each skill still fires only on its own specific task.",
+  "description": "One plugin, 23 narrowly-triggered skills plus a pre-ship review agent. Single install; each skill still fires only on its own specific task.",
   "plugins": [
     {
       "name": "engineering-quality",
       "source": "./plugins/engineering-quality",
-      "description": "22 engineering standards skills (web, security, performance, compliance, quality) plus a production-readiness review agent."
+      "description": "22 engineering standards skills (web, security, performance, compliance, quality), a documentation generation skill, plus a production-readiness review agent."
     }
   ]
 }

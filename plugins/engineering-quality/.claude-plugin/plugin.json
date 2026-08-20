@@ -1,8 +1,8 @@
 {
   "name": "engineering-quality",
-  "description": "22 narrowly-triggered engineering standards skills (web, security, performance, compliance, quality) plus a pre-ship production-readiness review agent.",
+  "description": "23 narrowly-triggered skills: 22 engineering standards skills (web, security, performance, compliance, quality) plus a documentation generation skill, plus a pre-ship production-readiness review agent.",
   "version": "1.0.0",
   "author": { "name": "Tsholofelo", "url": "https://github.com/tsholofelondawonde" },
-  "keywords": ["engineering", "security", "seo", "accessibility", "production-readiness"],
+  "keywords": ["engineering", "security", "seo", "accessibility", "production-readiness", "documentation", "readme"],
   "agents": ["./agents/production-readiness-reviewer.md"]
 }
