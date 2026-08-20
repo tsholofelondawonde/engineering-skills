@@ -1,8 +1,9 @@
 # engineering-skills
 
-22 narrowly-triggered engineering standards skills (web, security,
-performance, compliance, quality) plus a pre-ship production-readiness
-review agent. Each skill fires independently based on its own description.
+23 narrowly-triggered skills — 22 engineering standards skills (web,
+security, performance, compliance, quality) plus a documentation
+generation workflow — plus a pre-ship production-readiness review agent.
+Each skill fires independently based on its own description.
 
 The repo ships two ways from one canonical source: as portable Agent Skills
 (`skills/`, installable in any compatible agent) and as a Claude Code plugin
@@ -41,6 +42,8 @@ rate-limiting, csrf, cors, security-headers, secrets-management
 **Compliance (3):** privacy-policy, terms, cookie-consent
 
 **Quality (2):** accessibility, testing
+
+**Documentation (1):** readme-generator
 
 **Agent (1):** production-readiness-reviewer — invoke this deliberately
 before shipping. It's not a skill: it doesn't auto-trigger while you work,
