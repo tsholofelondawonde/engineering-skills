@@ -58,7 +58,7 @@ If the install summary says `Run /reload-plugins to activate.`, run that.
 | `error-states` | web | Use when handling API/network error responses in the UI, or confirming a successful user action (success/thank-you state). |
 | `image-optimization` | web | Use when adding images or media to a page. |
 | `authentication` | security | Use when creating or modifying login, signup, sessions, or authentication error handling. |
-| `authorization` | security | Use when adding permission checks, or protecting a resource or endpoint so only the right users can access it. |
+| `authorization` | security | Use when adding permission checks, protecting a resource or endpoint so only the right users can access it, or auditing existing routes for missing ownership checks. |
 | `token-security` | security | Use when implementing or reviewing how access/refresh tokens are issued, stored, or rotated. |
 | `rate-limiting` | security | Use when exposing a public endpoint — especially login, registration, password reset, token refresh, public forms, search, or any expensive/AI-backed operation. |
 | `csrf` | security | Use when authentication relies on cookies, or when reviewing form/session security against cross-site request forgery. |

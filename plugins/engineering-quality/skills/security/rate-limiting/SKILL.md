@@ -10,3 +10,7 @@ description: Use when exposing a public endpoint — especially login, registrat
   endpoint.
 - Enforced server-side — frontend throttling is a suggestion, not a
   limit. Return 429 when exceeded.
+- AI-backed endpoints: limit per authenticated user, not just per IP. Cap
+  input length before it reaches the model. Set a daily usage cap per user
+  and a spend alert at the provider so a bypass or bug fails loud instead
+  of expensive.
